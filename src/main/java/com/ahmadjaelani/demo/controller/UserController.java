@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class UserController {
     @Autowired
@@ -26,16 +28,22 @@ public class UserController {
     }
 
     @GetMapping(
-            path = "/api/users/current",
+            path = "/api/users/{userId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<UserResponse> get(User user) {
-        UserResponse userResponse = userService.get(user);
+    public WebResponse<UserResponse> get(String userId) {
+        UserResponse userResponse = userService.get(userId);
         return WebResponse.<UserResponse>builder().data(userResponse).build();
     }
 
+    @GetMapping(path = "api/users")
+    public WebResponse<List<UserResponse>> getAllUsers() {
+        List<UserResponse> users = userService.getAllUser();
+        return  WebResponse.<List<UserResponse>>builder().data(users).build();
+    }
+
     @PatchMapping(
-            path = "/api/users/current",
+            path = "/api/users",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )

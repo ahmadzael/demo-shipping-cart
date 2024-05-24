@@ -24,7 +24,7 @@ public class ProductController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<ProductResponse> create(User user, @RequestBody CreateProductRequest request) {
+    public WebResponse<ProductResponse> create(@RequestBody CreateProductRequest request) {
         ProductResponse productResponse = productService.create(request);
 
         return WebResponse.<ProductResponse>builder().data(productResponse).build();
@@ -89,7 +89,7 @@ public class ProductController {
                     .highPrice(highprice)
                     .build();
 
-            Page<ProductResponse> productResponses = productService.search(user, request);
+            Page<ProductResponse> productResponses = productService.search(request);
             return WebResponse.<List<ProductResponse>>builder()
                     .data(productResponses.getContent())
                     .paging(PagingResponse.builder()

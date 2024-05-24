@@ -24,5 +24,8 @@ public class RegisterRequest {
     @NotBlank
     @Size(max = 100)
     private String name;
+
+    @Size(max = 100)
+    private String address;
 }
 

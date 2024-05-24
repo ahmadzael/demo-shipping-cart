@@ -36,6 +36,8 @@ public class ProductServices {
         product.setType(ProductTypeEnum.valueOf(request.getType()));
         product.setPrice(request.getPrice());
 
+        productRepository.save(product);
+
         return toProductResponse(product);
     }
 
@@ -71,10 +73,9 @@ public class ProductServices {
 
 
     @Transactional(readOnly = true)
-    public Page<ProductResponse> search(User user, SearchProductRequest request){
+    public Page<ProductResponse> search(SearchProductRequest request){
         Specification<Product> specification = (root,query,builder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            predicates.add(builder.equal(root.get("user"), user));
             if (Objects.nonNull(request.getName())) {
                 predicates.add(
                         builder.like(root.get("name"), "%" + request.getName() + "%")
@@ -84,10 +85,14 @@ public class ProductServices {
                 predicates.add(builder.like(root.get("type"), "%" + request.getType() + "%"));
             }
             if (Objects.nonNull(request.getLowPrice())) {
-                predicates.add(builder.greaterThanOrEqualTo(root.get("price"), request.getLowPrice()));
+                //predicates.add(builder.greaterThanOrEqualTo(root.get("price"), request.getLowPrice()));
+                predicates.add(builder.greaterThanOrEqualTo(root.get("price"), "%" + request.getLowPrice() + "%"));
+
             }
             if (Objects.nonNull(request.getHighPrice())) {
-                predicates.add(builder.lessThanOrEqualTo(root.get("price"), request.getHighPrice()));
+                //predicates.add(builder.lessThanOrEqualTo(root.get("price"), request.getHighPrice()));
+                predicates.add(builder.greaterThanOrEqualTo(root.get("price"), "%" + request.getHighPrice() + "%"));
+
             }
 
             return query.where(predicates.toArray(new Predicate[]{})).getRestriction();

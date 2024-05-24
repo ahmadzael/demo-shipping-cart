@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServices {
@@ -28,18 +31,28 @@ public class UserServices {
         }
 
         User user = new User();
+        user.setId(UUID.randomUUID().toString());
         user.setUsername(request.getUsername());
         user.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
         user.setName(request.getName());
+        user.setAddress(request.getAddress());
 
         userRepository.save(user);
     }
 
-    public UserResponse get(User user) {
+    public UserResponse get(String userId) {
+        Optional<User> user = userRepository.findById(userId);
+
         return UserResponse.builder()
-                .username(user.getUsername())
-                .name(user.getName())
+                .username(user.get().getUsername())
+                .name(user.get().getName())
                 .build();
+    }
+
+    public List<UserResponse> getAllUser(){
+        List<User> listUser = userRepository.findAll();
+
+        return  listUser.stream().map(this::toUserRespnse).toList();
     }
 
     @Transactional
@@ -59,10 +72,20 @@ public class UserServices {
 
         userRepository.save(user);
 
-
         return UserResponse.builder()
                 .name(user.getName())
                 .username(user.getUsername())
+                .address(user.getAddress())
+                .id(user.getId())
+                .build();
+    }
+
+    private UserResponse toUserRespnse(User user){
+        return UserResponse.builder()
+                .name(user.getName())
+                .username(user.getUsername())
+                .address(user.getAddress())
+                .id(user.getId())
                 .build();
     }
 }

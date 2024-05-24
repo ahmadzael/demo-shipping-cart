@@ -29,7 +29,7 @@ public class User {
 
     private String address;
 
-    @Column(name= "token_expired_at")
+    @Column(name= "token_expired")
     private Long tokenExpiredAt;
 
     @OneToMany(mappedBy = "user")
