@@ -1,5 +1,6 @@
 package com.ahmadjaelani.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,8 +34,10 @@ public class User {
     private Long tokenExpiredAt;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Cart> carts;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Order> orders;
 }

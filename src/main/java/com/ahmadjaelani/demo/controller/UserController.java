@@ -51,4 +51,6 @@ public class UserController {
         UserResponse userResponse = userService.update(user, request);
         return WebResponse.<UserResponse>builder().data(userResponse).build();
     }
+
+
 }

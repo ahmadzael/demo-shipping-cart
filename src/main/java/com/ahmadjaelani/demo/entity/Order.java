@@ -1,6 +1,7 @@
 package com.ahmadjaelani.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +26,6 @@ public class Order {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     private LocalDateTime orderDate = LocalDateTime.now();

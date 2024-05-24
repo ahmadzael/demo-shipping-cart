@@ -58,16 +58,22 @@ public class CartServices {
 
         CartItem cartItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId).orElseGet(() -> {
             CartItem newCartItem = new CartItem();
+            newCartItem.setId(UUID.randomUUID().toString());
             newCartItem.setCart(cart);
             newCartItem.setProduct(product);
             newCartItem.setQuantity(quantity);
             return newCartItem;
         });
 
-        //cartItem.setQuantity(cartItem.getQuantity() + quantity);
+        cartItem.setQuantity(cartItem.getQuantity() + quantity);
         cartItemRepository.save(cartItem);
 
         return cartRepository.save(cart);
+    }
+
+    public Cart getCartByUserId(String userId) {
+        return cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found for user ID: " + userId));
     }
 
 

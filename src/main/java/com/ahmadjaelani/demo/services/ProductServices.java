@@ -85,13 +85,13 @@ public class ProductServices {
                 predicates.add(builder.like(root.get("type"), "%" + request.getType() + "%"));
             }
             if (Objects.nonNull(request.getLowPrice())) {
-                //predicates.add(builder.greaterThanOrEqualTo(root.get("price"), request.getLowPrice()));
-                predicates.add(builder.greaterThanOrEqualTo(root.get("price"), "%" + request.getLowPrice() + "%"));
+                predicates.add(builder.greaterThanOrEqualTo(root.get("price"), request.getLowPrice()));
+                //predicates.add(builder.greaterThanOrEqualTo(root.get("price"), "%" + request.getLowPrice() + "%"));
 
             }
             if (Objects.nonNull(request.getHighPrice())) {
-                //predicates.add(builder.lessThanOrEqualTo(root.get("price"), request.getHighPrice()));
-                predicates.add(builder.greaterThanOrEqualTo(root.get("price"), "%" + request.getHighPrice() + "%"));
+                predicates.add(builder.lessThanOrEqualTo(root.get("price"), request.getHighPrice()));
+                //predicates.add(builder.greaterThanOrEqualTo(root.get("price"), "%" + request.getHighPrice() + "%"));
 
             }
 

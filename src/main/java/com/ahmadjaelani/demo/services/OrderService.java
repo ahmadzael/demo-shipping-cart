@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class OrderService {
@@ -45,6 +46,7 @@ public class OrderService {
 
         // Create a new order
         Order order = new Order();
+        order.setId(UUID.randomUUID().toString());
         order.setUser(cart.getUser());
         order.setStatus("Processing");
 
@@ -53,6 +55,7 @@ public class OrderService {
         for (CartItem cartItem : cartItems) {
             if (cartItem.getCart().getId().equals(cart.getId())) {
                 OrderItem orderItem = new OrderItem();
+                orderItem.setId(UUID.randomUUID().toString());
                 orderItem.setOrder(order);
                 orderItem.setProduct(cartItem.getProduct());
                 orderItem.setQuantity(cartItem.getQuantity());
@@ -71,5 +74,10 @@ public class OrderService {
         cartItemRepository.deleteAll(cartItems);
 
         return order;
+    }
+
+    public Order getOrderByUserId(String userId) {
+        return orderRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found for user ID: " + userId));
     }
 }
