@@ -1,5 +1,6 @@
 package com.ahmadjaelani.demo.services;
 
+import com.ahmadjaelani.demo.entity.Product;
 import com.ahmadjaelani.demo.entity.User;
 import com.ahmadjaelani.demo.model.RegisterRequest;
 import com.ahmadjaelani.demo.model.UpdateUserRequest;
@@ -43,9 +44,13 @@ public class UserServices {
     public UserResponse get(String userId) {
         Optional<User> user = userRepository.findById(userId);
 
+        System.out.println((user.get().getUsername()));
+
         return UserResponse.builder()
                 .username(user.get().getUsername())
                 .name(user.get().getName())
+                .id(user.get().getId())
+                .address(user.get().getAddress())
                 .build();
     }
 
@@ -66,9 +71,15 @@ public class UserServices {
             user.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
         }
 
-        if (Objects.nonNull(request.getName())) {
-            user.setName(request.getName());
+        if (Objects.nonNull(request.getUsername())) {
+            user.setUsername(request.getUsername());
         }
+
+        if (Objects.nonNull(request.getAddress())) {
+            user.setAddress(request.getAddress());
+        }
+
+        user.setId(request.getId());
 
         userRepository.save(user);
 
@@ -77,6 +88,7 @@ public class UserServices {
                 .username(user.getUsername())
                 .address(user.getAddress())
                 .id(user.getId())
+                .address(user.getAddress())
                 .build();
     }
 
@@ -87,5 +99,13 @@ public class UserServices {
                 .address(user.getAddress())
                 .id(user.getId())
                 .build();
+    }
+
+    @Transactional
+    public void delete(String id){
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+
+        userRepository.delete(user);
     }
 }

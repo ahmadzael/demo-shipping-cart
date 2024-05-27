@@ -59,7 +59,7 @@ public class ProductController {
             path = "/api/products/{productId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<String> remove(User user,
+    public WebResponse<String> remove(
                                       @PathVariable("productId") String productId) {
         productService.delete(productId);
         return WebResponse.<String>builder().data("OK").build();
@@ -69,7 +69,7 @@ public class ProductController {
             path = "/api/products",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<List<ProductResponse>> search(User user,
+    public WebResponse<List<ProductResponse>> search(
                                                      @RequestParam(value = "name", required = false) String name,
                                                      @RequestParam(value = "email", required = false) String email,
                                                      @RequestParam(value = "phone", required = false) String phone,

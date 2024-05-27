@@ -12,6 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateUserRequest {
     @Size(max = 100)
+    private String id;
+
+    @Size(max = 100)
+    private String username;
+
+    @Size(max = 100)
     private String name;
 
     @Size(max = 100)

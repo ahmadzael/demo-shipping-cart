@@ -31,7 +31,7 @@ public class UserController {
             path = "/api/users/{userId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<UserResponse> get(String userId) {
+    public WebResponse<UserResponse> get(@PathVariable String userId) {
         UserResponse userResponse = userService.get(userId);
         return WebResponse.<UserResponse>builder().data(userResponse).build();
     }
@@ -42,7 +42,7 @@ public class UserController {
         return  WebResponse.<List<UserResponse>>builder().data(users).build();
     }
 
-    @PatchMapping(
+    @PutMapping(
             path = "/api/users",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -52,5 +52,14 @@ public class UserController {
         return WebResponse.<UserResponse>builder().data(userResponse).build();
     }
 
+    @DeleteMapping(
+            path = "/api/users/{userId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String> remove(
+            @PathVariable("userId") String userId) {
+        userService.delete(userId);
+        return WebResponse.<String>builder().data("OK").build();
+    }
 
 }
